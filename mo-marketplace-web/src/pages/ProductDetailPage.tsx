@@ -5,25 +5,24 @@ import {
     Typography,
     Box,
     Button,
-    Chip,
     Skeleton,
     Alert,
 } from '@mui/material';
-import {
-    ArrowBack,
-    ShoppingCart,
-    Inventory,
-} from '@mui/icons-material';
+import { ShoppingCart } from '@mui/icons-material';
 import toast from 'react-hot-toast';
 import { getProductApi } from '../api/products';
 import type { Product, Variant } from '../types';
 import VariantSelector from '../components/products/VariantSelector';
 import QuickBuyModal from '../components/products/QuickBuyModal';
 import PageWrapper from '../components/ui/PageWrapper';
+import StatusChip from '../components/ui/StatusChip';
+import PageHeader from '../components/ui/PageHeader';
+import { useAuth } from '../store/AuthContext';
 
 export default function ProductDetailPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
 
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
@@ -50,12 +49,13 @@ export default function ProductDetailPage() {
 
     // ─── QUICK BUY SUCCESS ────────────────────────────────
 
-    // Update stock locally without refetching — optimistic UI
     const handleBuySuccess = (remainingStock: number) => {
         if (!product || !selected) return;
 
         const updatedVariants = product.variants.map((v) =>
-            v.id === selected.id ? { ...v, stock: remainingStock } : v,
+            v.id === selected.id
+                ? { ...v, stock: remainingStock }
+                : v,
         );
 
         setProduct({ ...product, variants: updatedVariants });
@@ -69,14 +69,22 @@ export default function ProductDetailPage() {
             <PageWrapper showNavbar>
                 <Grid container spacing={4}>
                     <Grid size={{ xs: 12, md: 5 }}>
-                        <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 3 }} />
+                        <Skeleton
+                            variant="rectangular"
+                            height={400}
+                            sx={{ borderRadius: 3 }}
+                        />
                     </Grid>
                     <Grid size={{ xs: 12, md: 7 }}>
                         <Skeleton variant="text" width="60%" height={48} />
                         <Skeleton variant="text" width="90%" />
                         <Skeleton variant="text" width="70%" />
                         <Box mt={3}>
-                            <Skeleton variant="rectangular" height={120} sx={{ borderRadius: 2 }} />
+                            <Skeleton
+                                variant="rectangular"
+                                height={120}
+                                sx={{ borderRadius: 2 }}
+                            />
                         </Box>
                     </Grid>
                 </Grid>
@@ -86,7 +94,10 @@ export default function ProductDetailPage() {
 
     if (!product) return null;
 
-    const totalStock = product.variants.reduce((sum, v) => sum + v.stock, 0);
+    const totalStock = product.variants.reduce(
+        (sum, v) => sum + v.stock,
+        0,
+    );
     const inStock = totalStock > 0;
 
     // ─── RENDER ───────────────────────────────────────────
@@ -94,14 +105,11 @@ export default function ProductDetailPage() {
     return (
         <PageWrapper showNavbar>
 
-            {/* ── Back button ── */}
-            <Button
-                startIcon={<ArrowBack />}
-                onClick={() => navigate('/')}
-                sx={{ mb: 3, color: 'text.secondary' }}
-            >
-                Back to products
-            </Button>
+            {/* ── Back button via PageHeader ── */}
+            <PageHeader
+                title=""
+                backTo="/"
+            />
 
             <Grid container spacing={4}>
 
@@ -128,17 +136,11 @@ export default function ProductDetailPage() {
                 <Grid size={{ xs: 12, md: 7 }}>
 
                     {/* Name + stock status */}
-                    <Box display="flex" alignItems="center" gap={2} mb={1}>
+                    <Box display="flex" alignItems="center" gap={2} mb={1} flexWrap="wrap">
                         <Typography variant="h4" fontWeight={700}>
                             {product.name}
                         </Typography>
-                        <Chip
-                            icon={<Inventory sx={{ fontSize: 14 }} />}
-                            label={inStock ? 'In stock' : 'Out of stock'}
-                            color={inStock ? 'success' : 'error'}
-                            size="small"
-                            variant="outlined"
-                        />
+                        <StatusChip inStock={inStock} showIcon />
                     </Box>
 
                     {/* Description */}
@@ -146,7 +148,7 @@ export default function ProductDetailPage() {
                         {product.description || 'No description provided.'}
                     </Typography>
 
-                    {/* Selected price */}
+                    {/* Selected variant price */}
                     {selected && (
                         <Typography
                             variant="h4"
@@ -167,7 +169,7 @@ export default function ProductDetailPage() {
                         />
                     </Box>
 
-                    {/* Quick Buy button */}
+                    {/* Action button — 3 states */}
                     {!selected ? (
                         <Alert severity="info" sx={{ borderRadius: 2 }}>
                             Select a variant above to continue
@@ -176,6 +178,16 @@ export default function ProductDetailPage() {
                         <Alert severity="error" sx={{ borderRadius: 2 }}>
                             This variant is out of stock
                         </Alert>
+                    ) : !isAuthenticated ? (
+                        <Button
+                            variant="outlined"
+                            size="large"
+                            fullWidth
+                            onClick={() => navigate('/login')}
+                            sx={{ py: 1.5, fontSize: 16 }}
+                        >
+                            Login to Purchase
+                        </Button>
                     ) : (
                         <Button
                             variant="contained"
