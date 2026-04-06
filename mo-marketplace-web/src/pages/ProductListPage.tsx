@@ -103,7 +103,7 @@ export default function ProductListPage() {
                 // Skeleton loaders while fetching
                 <Grid container spacing={3}>
                     {[1, 2, 3, 4, 5, 6].map((i) => (
-                        <Grid xs={12} sm={6} md={4} key={i}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
                             <ProductCardSkeleton />
                         </Grid>
                     ))}
@@ -136,7 +136,7 @@ export default function ProductListPage() {
                 // Product grid
                 <Grid container spacing={3}>
                     {filtered.map((product) => (
-                        <Grid item xs={12} sm={6} md={4} key={product.id}>
+                        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={product.id}>
                             <ProductCard product={product} />
                         </Grid>
                     ))}

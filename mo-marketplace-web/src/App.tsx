@@ -5,8 +5,8 @@ import PrivateRoute from './components/PrivateRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProductListPage from './pages/ProductListPage';
-// import ProductDetailPage from './pages/ProductDetailPage';
-// import CreateProductPage from './pages/CreateProductPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import CreateProductPage from './pages/CreateProductPage';
 
 export default function App() {
   return (
@@ -23,7 +23,7 @@ export default function App() {
           <Route path="/" element={<ProductListPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          {/* <Route path="/products/:id" element={<ProductDetailPage />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route
             path="/create"
             element={
@@ -31,7 +31,7 @@ export default function App() {
                 <CreateProductPage />
               </PrivateRoute>
             }
-          /> */}
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
