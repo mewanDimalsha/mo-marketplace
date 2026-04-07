@@ -26,6 +26,7 @@ import AddVariantForm, {
 } from '../components/products/AddVariantForm';
 import VariantList from '../components/products/VariantList';
 import PageWrapper from '../components/ui/PageWrapper';
+import ImageUpload from '../components/ui/ImageUpload';
 
 // ─── SCHEMA ─────────────────────────────────────────────
 
@@ -53,6 +54,7 @@ export default function CreateProductPage() {
     const [productId, setProductId] = useState('');
     const [variants, setVariants] = useState<Variant[]>([]);
     const [duplicateError, setDuplicateError] = useState('');
+    const [uploadedImageUrl, setUploadedImageUrl] = useState('');
 
     const {
         register,
@@ -69,12 +71,13 @@ export default function CreateProductPage() {
             const { data: product } = await createProductApi({
                 name: data.name,
                 description: data.description || undefined,
-                imageUrl: data.imageUrl || undefined,
+                // uploaded file takes priority over typed URL
+                imageUrl: uploadedImageUrl || data.imageUrl || undefined,
             });
             setProductId(product.id);
             setActiveStep(1);
             toast.success('Product created! Now add variants.');
-        } catch (err: any) {
+        } catch {
             toast.error('Failed to create product. Try again.');
         }
     };
@@ -159,11 +162,32 @@ export default function CreateProductPage() {
                                 registration={register('description')}
                                 error={errors.description?.message}
                             />
-                            <FormTextField
+                            {/* Image upload */}
+                            <ImageUpload
+                                onUpload={(url) => setUploadedImageUrl(url)}
+                                currentUrl={uploadedImageUrl}
+                            />
+
+                            {/* Divider between upload and URL */}
+                            {/* <Box
+                                display="flex"
+                                alignItems="center"
+                                gap={2}
+                                my={1}
+                                mb={2}
+                            >
+                                <Box flex={1} height="1px" bgcolor="#e5e7eb" />
+                                <Typography variant="caption" color="text.secondary">
+                                    or paste image URL
+                                </Typography>
+                                <Box flex={1} height="1px" bgcolor="#e5e7eb" />
+                            </Box> */}
+
+                            {/* <FormTextField
                                 label="Image URL (optional)"
                                 registration={register('imageUrl')}
                                 error={errors.imageUrl?.message}
-                            />
+                            /> */}
 
                             <Box display="flex" justifyContent="flex-end" mt={2}>
                                 <LoadingButton

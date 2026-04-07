@@ -28,3 +28,9 @@ export const quickBuyApi = (variantId: string) =>
     client.post<{ message: string; remainingStock: number }>(
         `/products/variants/${variantId}/quick-buy`,
     );
+
+export const uploadImageApi = (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return client.post<{ url: string }>('/uploads/image', formData);
+};

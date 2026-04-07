@@ -6,6 +6,7 @@ import { User } from './auth/entities/user.entity';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
 import { Variant } from './products/entities/variant.entity';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { Variant } from './products/entities/variant.entity';
 
     AuthModule,
     ProductsModule,
+    UploadsModule,
   ],
 })
 export class AppModule { }
