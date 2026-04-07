@@ -13,7 +13,6 @@ import { useFetch } from '../hooks/useFetch';
 import ProductCard from '../components/ui/ProductCard';
 import { ProductCardSkeleton } from '../components/ui/Skeleton';
 import EmptyState from '../components/ui/EmptyState';
-import PageHeader from '../components/ui/PageHeader';
 import PageWrapper from '../components/ui/PageWrapper';
 
 export default function ProductListPage() {
@@ -36,7 +35,7 @@ export default function ProductListPage() {
         <PageWrapper showNavbar>
 
             {/* Header */}
-            <PageHeader
+            {/* <PageHeader
                 title="Products"
                 subtitle={`${products?.length ?? 0} products available`}
                 action={
@@ -47,14 +46,14 @@ export default function ProductListPage() {
                         }
                         : undefined
                 }
-            />
+            /> */}
 
             {/* Search */}
             <TextField
                 placeholder="Search products..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                sx={{ mb: 4, maxWidth: 400 }}
+                sx={{ mb: 4, width: '100%' }}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
