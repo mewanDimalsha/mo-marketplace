@@ -2,9 +2,9 @@
 
 A full-stack marketplace application with product management, variant handling, and JWT authentication.
 
-**Live Demo:** https://mo-marketplace.vercel.app  
-**API:** https://mo-api.railway.app  
-**Swagger Docs:** https://mo-api.railway.app/api
+**Live Demo:** https://mo-marketplace-mewan.vercel.app
+**API:** https://mo-marketplace-api-prod.onrender.com
+**Swagger Docs:** https://mo-marketplace-api-prod.onrender.com/api
 
 ---
 
@@ -15,8 +15,8 @@ Prerequisites: Docker and Docker Compose installed.
 ```bash
 git clone https://github.com/mewanDimalsha/mo-marketplace.git
 cd mo-marketplace
-cp .env.example .env        # add your Cloudinary credentials
-docker-compose up --build
+cp .env.docker        # add your Cloudinary credentials
+docker-compose up
 ```
 
 | Service  | URL                       |
@@ -48,16 +48,33 @@ docker run --name mo-db \
 
 ```bash
 cd mo-marketplace-api
-cp .env.example .env        # fill in values
-npm install
-npm run start:dev
+cp .env        # fill in values
+
+PORT="3000"
+NODE_ENV="development"
+DB_HOST="localhost"
+DB_PORT="5432"
+DB_USERNAME="postgres"
+DB_PASSWORD="password"
+DB_NAME="mo_marketplace"
+JWT_SECRET="super_secret_key_change_in_production"
+JWT_ACCESS_EXPIRES="15m"
+JWT_REFRESH_EXPIRES="7d"
+CLOUDINARY_NAME=dekwbmj3r
+CLOUDINARY_KEY=856644535352219
+CLOUDINARY_SECRET=7xwiIkwWcP8PBfPTBXz8q1ABT1M
+pnpm install
+pnpm run start:dev
 ```
 
 ### Frontend
 
 ```bash
 cd mo-marketplace-web
-cp .env.example .env        # set VITE_API_URL
+cp .env
+
+# set VITE_API_URL
+VITE_API_URL="http://localhost:3000"
 npm install
 npm run dev
 ```
@@ -71,7 +88,7 @@ npm run dev
 - **Authentication:** JWT with refresh tokens
 - **Image Storage:** Cloudinary
 - **API Documentation:** Swagger
-- **Deployment:** Vercel (frontend), Railway (backend)
+- **Deployment:** Vercel (frontend), render (backend)
 
 ### Backend Structure
 

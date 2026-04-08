@@ -1,5 +1,5 @@
 # Base image
-FROM node:20-alpine AS builder
+FROM node:20-alpine AS development
 
 # Install pnpm
 RUN npm install -g pnpm
@@ -9,11 +9,17 @@ WORKDIR /app
 # Copy package files and lock file
 COPY package*.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+# Install ALL dependencies (including dev)
+RUN pnpm install
 
-# Copy source code and build
+# Copy source code
 COPY . .
+
+# Start development server
+CMD ["pnpm", "run", "start:dev"]
+
+# Builder stage for production
+FROM development AS builder
 RUN pnpm build
 
 # Production image
@@ -43,16 +49,6 @@ USER nestjs
 
 # Expose API port
 EXPOSE 3000
-
-# Start final server
-CMD ["node", "dist/main"]
-
-# Expose API port
-EXPOSE 3000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD node --version || exit 1
 
 # Start final server
 CMD ["node", "dist/main"]
