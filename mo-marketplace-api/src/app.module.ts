@@ -24,7 +24,8 @@ import { UploadsModule } from './uploads/uploads.module';
         password: config.get('DB_PASSWORD'),
         database: config.get('DB_NAME'),
         entities: [User, Product, Variant],
-        synchronize: true,
+        synchronize: config.get('NODE_ENV') !== 'production', // Disable in production
+        ssl: config.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
       }),
       inject: [ConfigService],
     }),
