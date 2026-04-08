@@ -1,25 +1,37 @@
 # Base image
 FROM node:20-alpine AS builder
 
+# Install pnpm
+RUN npm install -g pnpm
+
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm ci --only=production
+# Copy package files and lock file
+COPY package*.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
 
 # Copy source code and build
 COPY . .
-RUN npm run build
+RUN pnpm build
 
 # Production image
 FROM node:20-alpine
 
+# Install pnpm
+RUN npm install -g pnpm
+
 WORKDIR /app
 
-# Copy built assets and production-only dependencies
+# Copy package files and lock file
+COPY package*.json pnpm-lock.yaml ./
+
+# Install only production dependencies
+RUN pnpm install --prod --frozen-lockfile
+
+# Copy built assets
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs
@@ -28,6 +40,12 @@ RUN adduser -S nestjs -u 1001
 # Change ownership of app directory
 RUN chown -R nestjs:nodejs /app
 USER nestjs
+
+# Expose API port
+EXPOSE 3000
+
+# Start final server
+CMD ["node", "dist/main"]
 
 # Expose API port
 EXPOSE 3000
