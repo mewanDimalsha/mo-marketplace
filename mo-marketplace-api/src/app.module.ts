@@ -25,7 +25,10 @@ import { UploadsModule } from './uploads/uploads.module';
         database: config.get('DB_NAME'),
         entities: [User, Product, Variant],
         synchronize: config.get('NODE_ENV') !== 'production', // Disable in production
-        ssl: config.get('NODE_ENV') === 'production' ? { rejectUnauthorized: false } : false,
+        ssl:
+          config.get('NODE_ENV') === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
       inject: [ConfigService],
     }),
@@ -35,4 +38,4 @@ import { UploadsModule } from './uploads/uploads.module';
     UploadsModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

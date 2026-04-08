@@ -3,9 +3,11 @@
 ## 🚀 Deploy to Render
 
 ### Step 1: Create Render Account
+
 Go to [render.com](https://render.com) and sign up/login.
 
 ### Step 2: Create PostgreSQL Database
+
 1. Click "New" → "PostgreSQL"
 2. Name: `mo-marketplace-db`
 3. Plan: Free tier
@@ -13,6 +15,7 @@ Go to [render.com](https://render.com) and sign up/login.
 5. Click "Create Database"
 
 ### Step 3: Create Web Service
+
 1. Click "New" → "Web Service"
 2. Connect your GitHub repository
 3. Configure:
@@ -22,6 +25,7 @@ Go to [render.com](https://render.com) and sign up/login.
    - **Start Command**: `docker run -p $PORT:3000 mo-marketplace-api`
 
 ### Step 4: Set Environment Variables
+
 In your Render web service settings, add these environment variables:
 
 ```
@@ -42,15 +46,19 @@ FRONTEND_URL=https://mo-marketplace-mewan.vercel.app
 ```
 
 ### Step 5: Deploy
+
 Click "Create Web Service" - Render will build and deploy automatically.
 
 ### Step 6: Update Frontend
+
 Once deployed, update your Vercel frontend with the new API URL:
+
 - Environment variable: `VITE_API_URL=https://your-render-service.onrender.com`
 
 ## 🔍 Testing Your Deployment
 
 After deployment, test these endpoints:
+
 - API: `https://your-service.onrender.com/api`
 - Health check: `https://your-service.onrender.com`
 

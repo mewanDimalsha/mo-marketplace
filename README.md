@@ -13,7 +13,7 @@ A full-stack marketplace application with product management, variant handling, 
 Prerequisites: Docker and Docker Compose installed.
 
 ```bash
-git clone https://github.com/yourusername/mo-marketplace.git
+git clone https://github.com/mewanDimalsha/mo-marketplace.git
 cd mo-marketplace
 cp .env.example .env        # add your Cloudinary credentials
 docker-compose up --build

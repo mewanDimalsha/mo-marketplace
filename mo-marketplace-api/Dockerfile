@@ -34,7 +34,7 @@ EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node --version || exit 1
+    CMD node --version || exit 1
 
 # Start final server
 CMD ["node", "dist/main"]
