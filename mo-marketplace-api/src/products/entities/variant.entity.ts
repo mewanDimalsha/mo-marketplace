@@ -4,10 +4,12 @@ import {
     Column,
     ManyToOne,
     CreateDateColumn,
+    Unique,
 } from 'typeorm';
 import { Product } from './product.entity';
 
 @Entity('variants')
+@Unique(['product', 'combination_key'])
 export class Variant {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -21,7 +23,7 @@ export class Variant {
     @Column()
     material: string;
 
-    @Column({ unique: true })
+    @Column()
     combination_key: string;
 
     @Column('decimal', { precision: 10, scale: 2 })
