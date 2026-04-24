@@ -1,22 +1,24 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './store/AuthContext';
-import PrivateRoute from './components/PrivateRoute';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ProductListPage from './pages/ProductListPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CreateProductPage from './pages/CreateProductPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./store/AuthProvider";
+import PrivateRoute from "./components/PrivateRoute";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ProductListPage from "./pages/ProductListPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import CreateProductPage from "./pages/CreateProductPage";
 
 export default function App() {
   return (
     <AuthProvider>
+      {" "}
+      //gives everyone access to auth state
       <BrowserRouter>
-        <Toaster
+        <Toaster //single <Toaster> component rendered once anywhere in the tree — it's the container that actually displays toast notifications.
           position="top-right"
           toastOptions={{
             duration: 3000,
-            style: { borderRadius: '8px', fontFamily: 'inherit' },
+            style: { borderRadius: "8px", fontFamily: "inherit" },
           }}
         />
         <Routes>
@@ -28,6 +30,9 @@ export default function App() {
             path="/create"
             element={
               <PrivateRoute>
+                {" "}
+                //reads auth state and either renders children or redirects to
+                login
                 <CreateProductPage />
               </PrivateRoute>
             }
