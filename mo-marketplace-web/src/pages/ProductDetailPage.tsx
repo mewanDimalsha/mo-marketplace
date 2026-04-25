@@ -41,7 +41,8 @@ export default function ProductDetailPage() {
   }, [id]);
 
   // ─── QUICK BUY SUCCESS ────────────────────────────────
-
+  // After a successful purchase, we get the remaining stock from the modal and update our state accordingly.
+  // This way, the UI reflects the new stock without needing to refetch the product data.
   const handleBuySuccess = (remainingStock: number) => {
     if (!product || !selected) return;
 
